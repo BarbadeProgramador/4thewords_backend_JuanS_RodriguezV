@@ -4,9 +4,9 @@ from db.database import get_db
 # Schemas Dto  
 from schemas.View_dataDto import LeyendaDto
 from schemas.Create_dataDto import LeyendaDto_Create
+from schemas.Update_dataDto import LeyendaDto_Update
 # Views , operation accions crud 
-from crud.views import view_leyendas , view_leyenda_by_id , create_leyenda  
-
+from crud.views import view_leyendas , view_leyenda_by_id , create_leyenda  , update_leyenda 
 
 router = APIRouter(prefix="/leyendas", tags=["Leyendas"])
 
@@ -33,3 +33,8 @@ def create_legend(leyenda: LeyendaDto_Create ,db: Session = Depends(get_db)):
     data =  create_leyenda(leyenda , db)
     return data
 
+
+@router.put("/update/{id}", response_model=dict)
+def update_legend(id , leyenda: LeyendaDto_Update, db: Session = Depends(get_db)):
+    data =  update_leyenda(id ,leyenda, db)
+    return data

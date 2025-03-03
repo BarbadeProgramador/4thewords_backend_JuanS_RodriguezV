@@ -90,4 +90,29 @@ def create_leyenda(leyenda ,db: Session = Depends(get_db)):
 
     return {"message": "Leyenda creada exitosamente"}
 
+
+def update_leyenda(id,  leyenda ,db: Session = Depends(get_db)):
+
+
+    # # categoria = db.query(Categorias).filter(Categorias.nombre == leyenda.categoria.nombre).first()
+    # data = db.query(Leyendas).filter(Leyendas.id == id).first()
+    # if not data:
+    #     return {"message": "Leyenda no encontrada"}
     
+    stmt = db.query(Leyendas).filter(Leyendas.id == id).update({
+        Leyendas.nombre: leyenda.nombre,
+        Leyendas.txt_descrip: leyenda.txt_descrip,
+        Leyendas.fecha_leyenda: leyenda.fecha_leyenda,
+        Leyendas.historia: leyenda.historia,
+        Leyendas.imagen: leyenda.imagen,
+        Leyendas.id_categoria: leyenda.id_categoria,
+        Leyendas.id_provincia: leyenda.id_provincia,
+        Leyendas.id_canton: leyenda.id_canton,
+        Leyendas.id_distrito: leyenda.id_distrito
+    })
+
+    db.commit()
+
+    
+
+    return {"message": "Leyenda actualizada exitosamente"}

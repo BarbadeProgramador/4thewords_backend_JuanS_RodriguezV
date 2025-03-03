@@ -99,7 +99,7 @@ def update_leyenda(id,  leyenda ,db: Session = Depends(get_db)):
     # if not data:
     #     return {"message": "Leyenda no encontrada"}
     
-    stmt = db.query(Leyendas).filter(Leyendas.id == id).update({
+    db.query(Leyendas).filter(Leyendas.id == id).update({
         Leyendas.nombre: leyenda.nombre,
         Leyendas.txt_descrip: leyenda.txt_descrip,
         Leyendas.fecha_leyenda: leyenda.fecha_leyenda,
@@ -116,3 +116,11 @@ def update_leyenda(id,  leyenda ,db: Session = Depends(get_db)):
     
 
     return {"message": "Leyenda actualizada exitosamente"}
+
+
+def delete_leyenda(id, db: Session = Depends(get_db)):
+        
+    db.query(Leyendas).filter(Leyendas.id == id).delete()
+    db.commit()
+
+    return {"message": "Leyenda eliminada exitosamente"}

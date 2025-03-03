@@ -11,12 +11,12 @@ from crud.views import view_leyendas , view_leyenda_by_id , create_leyenda  , up
 router = APIRouter(prefix="/leyendas", tags=["Leyendas"])
 
 @router.get("/", response_model=list[LeyendaDto])
-def view_all(db: Session = Depends(get_db)):
+async def view_all(db: Session = Depends(get_db)):
     data =  view_leyendas(db)
     return data
 
 @router.get("/{id}", response_model=LeyendaDto)
-def view_legend_id(id: int, db: Session = Depends(get_db)):
+async def view_legend_id(id: int, db: Session = Depends(get_db)):
     data = view_leyenda_by_id(id, db)
     return data
 
@@ -29,21 +29,21 @@ def view_legend_id(id: int, db: Session = Depends(get_db)):
 #     return data
 
 @router.post("/create/", response_model=dict)
-def create_legend(leyenda: LeyendaDto_Create ,db: Session = Depends(get_db)):
+async def create_legend(leyenda: LeyendaDto_Create ,db: Session = Depends(get_db)):
     data =  create_leyenda(leyenda , db)
     
     return data
 
 
 @router.put("/update/{id}", response_model=dict)
-def update_legend(id , leyenda: LeyendaDto_Update, db: Session = Depends(get_db)):
+async def update_legend(id , leyenda: LeyendaDto_Update, db: Session = Depends(get_db)):
     data =  update_leyenda(id ,leyenda, db)
 
     return data
 
 
 @router.delete("/delete/{id}", response_model=dict)
-def delete_legend(id: int, db: Session = Depends(get_db)):
+async def delete_legend(id: int, db: Session = Depends(get_db)):
     data = delete_leyenda(id, db)
 
     return data

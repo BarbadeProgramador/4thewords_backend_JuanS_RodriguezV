@@ -17,6 +17,8 @@ def view_leyendas(db: Session = Depends(get_db)):
 
     return data
 
+
+
 def view_leyenda_by_id(id: int, db: Session = Depends(get_db)):
 
     data = (db.query(Leyendas).options(
@@ -27,44 +29,61 @@ def view_leyenda_by_id(id: int, db: Session = Depends(get_db)):
     
     return data
 
+# function create location if not exists in the database
+def create_location(model,leyenda , db: Session = Depends(get_db)): 
+    instance = db.query(model).filter(model.nombre == leyenda).first()
+    if not instance:
+        instance = model(
+            nombre= leyenda
+        )
+    
+        db.add(instance)
+    return instance
+
+
 def create_leyenda(leyenda ,db: Session = Depends(get_db)):
 
-    # data = leyenda.dict()
-    categoria = db.query(Categorias).filter(Categorias.nombre == leyenda.categoria.nombre).first()
-    if not categoria:
-        categoria = Categorias(
-            nombre=leyenda.categoria.nombre
-        )
-        db.add(categoria)
-        db.commit()
-        db.refresh(categoria)
+    # data = leyenda.dict() 
+    categoria = create_location(Categorias,leyenda.categoria.nombre,db)
+    canton = create_location(Canton,leyenda.canton.nombre,db)
+    provincia = create_location(Provincias,leyenda.provincia.nombre,db)
+    distrito = create_location(Distrito,leyenda.distrito.nombre,db)
 
-    canton = db.query(Canton).filter(Canton.nombre == leyenda.canton.nombre).first()
-    if not canton:
-        canton = Canton(
-            nombre=leyenda.canton.nombre
-        )
-        db.add(canton)
-        db.commit()
-        db.refresh(canton)
+    # categoria = db.query(Categorias).filter(Categorias.nombre == leyenda.categoria.nombre).first()
+    # if not categoria:
+    #     categoria = Categorias(
+    #         nombre=leyenda.categoria.nombre
+    #     )
+    #     db.add(categoria)
+    #     db.commit()
+    #     db.refresh(categoria)
 
-    provincia = db.query(Provincias).filter(Provincias.nombre == leyenda.provincia.nombre).first()
-    if not provincia:
-        provincia = Provincias(
-            nombre=leyenda.provincia.nombre
-        )
-        db.add(provincia)
-        db.commit()
-        db.refresh(provincia)
+    # canton = db.query(Canton).filter(Canton.nombre == leyenda.canton.nombre).first()
+    # if not canton:
+    #     canton = Canton(
+    #         nombre=leyenda.canton.nombre
+    #     )
+    #     db.add(canton)
+    #     db.commit()
+    #     db.refresh(canton)
+
+    # provincia = db.query(Provincias).filter(Provincias.nombre == leyenda.provincia.nombre).first()
+    # if not provincia:
+    #     provincia = Provincias(
+    #         nombre=leyenda.provincia.nombre
+    #     )
+    #     db.add(provincia)
+    #     db.commit()
+    #     db.refresh(provincia)
     
-    distrito = db.query(Distrito).filter(Distrito.nombre == leyenda.distrito.nombre).first()
-    if not distrito:
-        distrito = Distrito(
-            nombre=leyenda.distrito.nombre
-        )
-        db.add(distrito)
-        db.commit()
-        db.refresh(distrito)
+    # distrito = db.query(Distrito).filter(Distrito.nombre == leyenda.distrito.nombre).first()
+    # if not distrito:
+    #     distrito = Distrito(
+    #         nombre=leyenda.distrito.nombre
+    #     )
+    #     db.add(distrito)
+    #     db.commit()
+    #     db.refresh(distrito)
    
 
     db_leyenda = Leyendas(

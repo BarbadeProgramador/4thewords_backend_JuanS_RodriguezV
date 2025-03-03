@@ -50,4 +50,3 @@ uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 ### **📢 IMPORTANTE**  
 Asegúrate de tener un entorno virtual configurado para evitar conflictos de dependencias.  
 
-📌 **¿Dudas o problemas?** ¡Contribuye o abre un issue en el repositorio! 🚀  
